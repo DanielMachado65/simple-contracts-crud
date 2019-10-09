@@ -16,12 +16,7 @@ class Api::V1::ApiController < ActionController::Base
   # --------------------------- login
   def authenticate_token
     bearer_token
-    Embaixador.find_by(auth_token: @bearer_token) unless @bearer_token.nil?
-    if request_from_portal?
-      return Embaixador.find_by(auth_token_portal: @bearer_token) unless @bearer_token.nil?
-    else
-      return Embaixador.find_by(auth_token: @bearer_token) unless @bearer_token.nil?
-    end
+    User.find_by(auth_token: @bearer_token) unless @bearer_token.nil?
   end
 
   def bearer_token

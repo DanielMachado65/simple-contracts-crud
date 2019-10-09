@@ -1,24 +1,19 @@
-# README
+# simple-contracts-crud
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+> is an application to use as backend for contract logic
 
-Things you may want to cover:
+para rodar você vai precisar fazer:
 
-* Ruby version
+```sh
+# para criar a banco de dados
+rake db:create
 
-* System dependencies
+# para instalar as depedências
+rake db:migrate
 
-* Configuration
+# para pegar as depedências
+bundle install
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# para executar
+rails s -e development -b '0.0.0.0' -p 4000
+```
