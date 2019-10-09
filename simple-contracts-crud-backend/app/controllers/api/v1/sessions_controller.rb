@@ -1,9 +1,11 @@
 class Api::V1::SessionsController < Api::V1::ApiController
+
+  before_action :set_user, except: [:create]
   skip_before_action :require_auth_token, only: [:create], raise: false
 
   def login
-    if @ambassador
-      allow_token_to_be_used_only_for(@ambassador)
+    if @user
+      allow_token_to_be_used_only_for(@user)
       api_success(@ambassador)
     else
       api_unauthorized('Credenciais erradas, por favor tente novamente')
@@ -15,12 +17,25 @@ class Api::V1::SessionsController < Api::V1::ApiController
   end
 
   # ----------------------------- User
+  protected
+
+  def set_user
+    # check if ambassador already login
+    return @bearer_token unless bearer_token.nil?
+
+    @errors = verify_params(params)
+    return api_error(@errors) if @errors.present?
+
+    @user = find_user(params)
+  end
 
   private
 
-  def not_found_ambassador(params)
-    api_unauthorized(registered: false,
-                     msg: "A conta com #{params[:user][:fb_id].presence || params[:user][:email].presence} não existe")
+  def find_user(params)
+    return false if params[:user][:email].blank?
+
+    User.find_by(email: params[:user][:email])
+        .authenticate(params[:user][:email])
   end
 
   def verify_params(params)

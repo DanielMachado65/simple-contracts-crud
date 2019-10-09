@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_09_201330) do
+ActiveRecord::Schema.define(version: 2019_10_09_210908) do
 
   create_table "contracts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.date "initial_date"
@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(version: 2019_10_09_201330) do
     t.string "cpf"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "auth_token"
+    t.string "password_digest"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
