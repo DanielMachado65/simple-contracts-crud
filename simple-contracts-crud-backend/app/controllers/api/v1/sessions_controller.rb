@@ -1,6 +1,6 @@
 class Api::V1::SessionsController < Api::V1::ApiController
 
-  before_action :set_user, except: [:create]
+  before_action :set_user
   skip_before_action :require_auth_token, only: [:create], raise: false
 
   def login

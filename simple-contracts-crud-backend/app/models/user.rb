@@ -6,7 +6,6 @@ class User < ApplicationRecord
   has_many :contracts
 
   # validates
-  validates :password, presence: true, length: {minimum: 6}
   validates :email, presence: true, length: {maximum: 260}, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i}, uniqueness: {case_sensitive: false}
 
   # callback
