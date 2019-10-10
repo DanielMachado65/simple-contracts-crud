@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
 
       resources :users, only: %I[create destroy show update]
+      resources :contracts
 
       post '/login', to: 'sessions#login'
       post '/logout', to: 'sessions#destroy'
