@@ -1,14 +1,15 @@
 class Api::V1::SessionsController < Api::V1::ApiController
 
   before_action :set_user
+  skip_before_action :verify_authenticity_token
   skip_before_action :require_auth_token, only: [:create], raise: false
 
   def login
     if @user
       allow_token_to_be_used_only_for(@user)
-      api_success(@ambassador)
+      api_success(@user.as_json(only: :auth_token))
     else
-      api_unauthorized('Credenciais erradas, por favor tente novamente')
+      api_unauthorized(error: 'Credenciais erradas, por favor tente novamente')
     end
   end
 
@@ -34,8 +35,10 @@ class Api::V1::SessionsController < Api::V1::ApiController
   def find_user(params)
     return false if params[:user][:email].blank?
 
-    User.find_by(email: params[:user][:email])
-        .authenticate(params[:user][:email])
+    @user = User.find_by(email: params[:user][:email])
+    return false if @user.nil?
+
+    @user.authenticate(params[:user][:password])
   end
 
   def verify_params(params)

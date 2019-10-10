@@ -10,6 +10,15 @@ module Api
         create_user(params)
       end
 
+      def self.update(user, attrs = {})
+        params = user_params(attrs)
+        return {code: 400, error: error} unless params.permitted?
+
+        return user.as_json(only: :auth_token) if update_user(user, params)
+
+        {code: 400, error: 'update not possible'}
+      end
+
 
       private
 
@@ -24,6 +33,10 @@ module Api
 
         @user.regenerate_token
         @user.as_json(only: :auth_token)
+      end
+
+      def self.update_user(user, attrs)
+        user.update(attrs)
       end
     end
   end
